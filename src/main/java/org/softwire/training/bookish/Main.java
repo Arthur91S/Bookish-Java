@@ -1,9 +1,11 @@
 package org.softwire.training.bookish;
 
+//import com.mysql.cj.xdevapi.Statement;
 import org.jdbi.v3.core.Jdbi;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -22,10 +24,16 @@ public class Main {
         - name
      */
 
+    /* book_authors table
+        - id
+        - book_id
+        - author_id
+     */
+
     /* checked_out_books table
         - id
         - user_id -> foreign key ->member id
-        - book_id -> foreign key
+        - book_id -> foreign key  book -> id
         - checked_out_on(date)
         - due_back_on(date)
      */
@@ -46,8 +54,28 @@ public class Main {
 
         // TODO: print out the details of all the books (using JDBC)
         // See this page for details: https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
+        Connection con = DriverManager.getConnection(connectionString);
 
-        Connection connection = DriverManager.getConnection(connectionString);
+        Statement stmt = null;
+        String query = "SELECT * FROM books";
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                String coffeeName = rs.getString("COF_NAME");
+                int supplierID = rs.getInt("SUP_ID");
+                float price = rs.getFloat("PRICE");
+                int sales = rs.getInt("SALES");
+                int total = rs.getInt("TOTAL");
+                System.out.println(coffeeName + "\t" + supplierID +
+                        "\t" + price + "\t" + sales +
+                        "\t" + total);
+            }
+        } catch (SQLException e ) {
+            JDBCTutorialUtilities.printSQLException(e);
+        } finally {
+            if (stmt != null) { stmt.close(); }
+        }
 
 
 
