@@ -1,6 +1,6 @@
-CREATE SCHEMA bookish2;
+CREATE SCHEMA bookish;
 
-USE bookish2;
+USE bookish;
 
 CREATE TABLE books (
 	id INT NOT NULL AUTO_INCREMENT,
