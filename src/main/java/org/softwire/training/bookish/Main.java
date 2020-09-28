@@ -1,12 +1,18 @@
 package org.softwire.training.bookish;
 
 //import com.mysql.cj.xdevapi.Statement;
+import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.jdbi.v3.core.mapper.reflect.ConstructorMapper;
+import org.softwire.training.bookish.models.database.Book;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -20,7 +26,7 @@ public class Main {
         String password =dotenv.get("MYSQL_PASS");
         String connectionString = "jdbc:mysql://" + hostname + "/" + database + "?user=" + user + "&password=" + password + "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT&useSSL=false";
 
-        jdbcMethod(connectionString);
+//        jdbcMethod(connectionString);
         jdbiMethod(connectionString);
     }
 
@@ -59,7 +65,19 @@ public class Main {
 
         Jdbi jdbi = Jdbi.create(connectionString);
 
+//        List<Book> names = jdbi.withHandle(handle ->
+//                handle.createQuery("SELECT title FROM books")
+//                        .mapTo(Book.class)
+//                        .list());
 
 
+        Handle handle = jdbi.open();
+
+        handle.registerRowMapper(ConstructorMapper.factory(Book.class));
+        Set<Book> userSet = handle.createQuery("SELECT * FROM books")
+                .mapTo(Book.class)
+                .collect(Collectors.toSet());
+
+        userSet.forEach( book -> System.out.println(book.getTitle()));
     }
 }
