@@ -9,6 +9,27 @@ import java.sql.SQLException;
 
 public class Main {
 
+    /* books table
+        - id
+        - title
+        - author
+        - ISBN
+        - copies_available
+    */
+
+    /* members table
+        - id
+        - name
+     */
+
+    /* checked_out_books table
+        - id
+        - user_id -> foreign key ->member id
+        - book_id -> foreign key
+        - checked_out_on(date)
+        - due_back_on(date)
+     */
+
     public static void main(String[] args) throws SQLException {
         String hostname = "localhost";
         String database = "bookish";
