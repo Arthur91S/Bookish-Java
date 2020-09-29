@@ -13,6 +13,15 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
+        // check if author exists
+
+
+    //list all books by title
+
+// member
+    // lists all members by name
+
+
 @Controller
 @RequestMapping("/about")
 public class AboutUsController {

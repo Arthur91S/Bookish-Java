@@ -23,11 +23,11 @@ public class Main {
         String hostname = "localhost";
         String database = "bookish";
         String user = "root";
-        String password =dotenv.get("MYSQL_PASS");
-        String connectionString = "jdbc:mysql://" + hostname + "/" + database + "?user=" + user + "&password=" + password + "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT&useSSL=false";
+        String password =dotenv.get("DB_PASS");
+        String connectionString = "jdbc:mysql://" + hostname + "/" + database + "?user=" + user + "&password=" + password + "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT&useSSL=false" + "&allowPublicKeyRetrieval=true";
 
 //        jdbcMethod(connectionString);
-        jdbiMethod(connectionString);
+        //jdbiMethod(connectionString);
     }
 
     private static void jdbcMethod(String connectionString) throws SQLException {
