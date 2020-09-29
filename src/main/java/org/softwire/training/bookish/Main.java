@@ -65,19 +65,14 @@ public class Main {
 
         Jdbi jdbi = Jdbi.create(connectionString);
 
-//        List<Book> names = jdbi.withHandle(handle ->
-//                handle.createQuery("SELECT title FROM books")
-//                        .mapTo(Book.class)
-//                        .list());
+        List<Book> books = (List<Book>) jdbi.withHandle(handle ->
+                handle
+                    .registerRowMapper(ConstructorMapper.factory(Book.class))
+                    .createQuery("SELECT * FROM books")
+                    .mapTo(Book.class)
+                    .collect(Collectors.toList())
+        );
 
-
-        Handle handle = jdbi.open();
-
-        handle.registerRowMapper(ConstructorMapper.factory(Book.class));
-        Set<Book> userSet = handle.createQuery("SELECT * FROM books")
-                .mapTo(Book.class)
-                .collect(Collectors.toSet());
-
-        userSet.forEach( book -> System.out.println(book.getTitle()));
+        books.forEach( book -> System.out.println(book.getTitle()));
     }
 }
