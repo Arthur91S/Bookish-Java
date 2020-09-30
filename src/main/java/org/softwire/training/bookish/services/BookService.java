@@ -11,16 +11,6 @@ import java.util.stream.Collectors;
 @Service
 public class BookService extends DatabaseService{
     public List<Book> getAllBooks() {
-
-    //    List<Book> allBooks = (List<Book>) jdbi.withHandle(handle -> handle
-    //            .registerRowMapper(ConstructorMapper.factory(Book.class))
-    //            .createQuery("SELECT * FROM books")
-    //            .mapTo(Book.class)
-    //            .collect(Collectors.toList())
-    //    );
-    //    return allBooks;
-    //}
-
         return jdbi.withHandle(handle ->
                 handle.createQuery("SELECT * FROM books")
                         .mapToBean(Book.class)
@@ -29,24 +19,27 @@ public class BookService extends DatabaseService{
     }
 
     public Book getBook(int bookId) {
-
-        //return jdbi.withHandle(handle ->
-        //        handle.createQuery("SELECT * FROM books WHERE id is :bookId")
-        //                .bind("bookId", bookId)
-        //                .mapToBean(Book.class)
-        //                .findFirst()
-        //);
-
+        return jdbi.withHandle(handle ->
+                handle.createQuery("SELECT * FROM books WHERE id = :bookId")
+                        .bind("bookId", bookId)
+                        .mapToBean(Book.class)
+                        .findOnly()
+        );
     }
 
-    public void addBook(Book book) {
-        jdbi.useHandle(handle ->
-                handle.createUpdate("INSERT INTO books (title, isbn, copies_total) VALUES (:title, :isbn, :copies_total)")
-                        .bind("title", book.getTitle())
-                        .bind("isbn", book.getIsbn())
-                        .bind("copies_total", book.getCopies_total())
-                        .execute()
-        );
+    public boolean addBook(Book book) {
+        try {
+            jdbi.useHandle(handle ->
+                    handle.createUpdate("INSERT INTO books (title, isbn, copies_total) VALUES (:title, :isbn, :copies_total)")
+                            .bind("title", book.getTitle())
+                            .bind("isbn", book.getIsbn())
+                            .bind("copies_total", book.getCopies_total())
+                            .execute()
+            );
+        } catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     public void deleteBook(int bookId) {
@@ -57,10 +50,19 @@ public class BookService extends DatabaseService{
         );
     }
 
-    public void updateBook(int bookId) {
-
-
-        jdbi.useHandle(handle ->
-                handle.createUpdate("UPDATE books SET "));
+    public boolean updateBook(Book book) {
+        try {
+            jdbi.useHandle(handle ->
+                    handle.createUpdate("UPDATE books SET title=:title, isbn=:isbn, copies_total=:copies_total WHERE id=:id")
+                            .bind("title", book.getTitle())
+                            .bind("isbn", book.getIsbn())
+                            .bind("copies_total", book.getCopies_total())
+                            .bind("id", book.getId())
+                            .execute()
+            );
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

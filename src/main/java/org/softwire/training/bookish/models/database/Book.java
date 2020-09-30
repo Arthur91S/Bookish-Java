@@ -9,15 +9,6 @@ public class Book {
     String isbn;
     int copies_total;
 
-    //@ConstructorProperties({"id", "title", "isbn", "copies_total"})
-    //public Book(int id, String title, String isbn, int copies_total) {
-    //    this.id = id;
-    //    this.title = title;
-    //    this.isbn = isbn;
-    //    this.copies_total = copies_total;
-    //}
-
-
     public void setId(int id) {
         this.id = id;
     }

@@ -1,7 +1,6 @@
 package org.softwire.training.bookish.controllers;
 
 import org.softwire.training.bookish.models.database.Book;
-import org.softwire.training.bookish.models.database.Technology;
 import org.softwire.training.bookish.models.page.BooksPageModel;
 import org.softwire.training.bookish.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 
@@ -46,16 +46,28 @@ public class BooksController {
     RedirectView deleteBook(@RequestParam int bookId) {
         bookService.deleteBook(bookId);
         return new RedirectView("/books");
-
     }
 
     @RequestMapping("/edit-book")
-    RedirectView editBook(@RequestParam int bookId) {
+    ModelAndView editBook(@RequestParam int bookId) {
 
-        bookService.getBook(bookId);
+        Book book = bookService.getBook(bookId);
+        return new ModelAndView("edit_book", "book", book);
+    }
 
-        return new RedirectView("/edit-book/bookId");
+    @RequestMapping("/update-book")
+    RedirectView updateBook(@ModelAttribute Book book, RedirectAttributes attr) {
 
+        // validate book
+        // then update
+
+        if (bookService.updateBook(book)){
+            attr.addFlashAttribute("success", "Excellent, everything went just fine.");
+        } else {
+            attr.addFlashAttribute("error", "Ops, something went wrong.");
+        }
+
+        return new RedirectView("/books");
     }
 
 
