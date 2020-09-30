@@ -14,8 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class BooksController {
         List<Book> allBooks = bookService.getAllBooks();
         List<Author> booksWithAuthors = authorService.getAllAuthors();
 
-        Map<Book, List<Author>> bookWithAuthor = new HashMap<Book, List<Author>>();
+        Map<Book, List<Author>> bookWithAuthor = new LinkedHashMap<>();
 
              for(int i= 0; i < allBooks.size(); i++){
                  Book book = allBooks.get(i);
@@ -50,13 +49,16 @@ public class BooksController {
         BooksPageModel booksPageModel = new BooksPageModel();
         booksPageModel.setBooks(allBooks);
 
-        return new ModelAndView("books","bookWithAuthor", bookWithAuthor);
+        booksPageModel.setBooksWithAuthor(bookWithAuthor);
+
+        return new ModelAndView("books","model", booksPageModel);
     }
 
     @RequestMapping("/add-book")
-    RedirectView addBook(@ModelAttribute Book book) {
+    RedirectView addBook(@ModelAttribute Book book, @RequestParam String authors) {
 
-        bookService.addBook(book);
+        int bookId = bookService.addBook(book);
+        authorService.addBookAuthors(bookId, authors);
 
         return new RedirectView("/books");
     }

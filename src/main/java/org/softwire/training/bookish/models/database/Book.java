@@ -1,7 +1,5 @@
 package org.softwire.training.bookish.models.database;
 
-import java.beans.ConstructorProperties;
-
 public class Book {
 
     int id;

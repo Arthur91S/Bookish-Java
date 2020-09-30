@@ -24,21 +24,13 @@
     <div class="alert error" role="alert" th:text="${error}" th:if="${error}"></div>
 
     <div class="book-list">
-        <div th:each="book : ${ booksWithAuthor }" class="book">
-            <p th:text="${book}">  </p>
-<!--            <td th:text="${book.key.title}"></td>-->
-<!--            <td th:text="${book.value.title}"></td>-->
-<!--            <td th:text="${book.value[0].title}"></td>-->
-<!--            <h3 th:text="${book}"></h3>-->
-<!--            <div>ISBN: <span th:text="${book.isbn}"></span></div>-->
-<!--            <div>Books total: <span th:text="${book.copies_total}"></span></div>-->
-<!--            <div>Id: <span th:text="${book.id}"></span></div>-->
-<!--            <div>Authors: <span th:text="${book.authors}"></span></div>-->
+        <div th:each="book : ${ model.booksWithAuthor }" class="book">
 
-            <p>
-<!--                <a th:href="${'/books/delete-book?bookId=' + book.getId()}" class="delete-button">delete</a>-->
-<!--                <a th:href="${'/books/edit-book?bookId=' + book.getId()}" class="edit-button">Edit</a>-->
-<!--            </p>-->
+            <div>Title: <span th:text="${book.key.title}"></span></div>
+            <div>ISBN: <span th:text="${book.key.isbn}"></span></div>
+            <ul th:each="author:  ${book.value }" >
+                <li th:text="${ author.name}"></li>
+            </ul>
         </div>
     </div>
 

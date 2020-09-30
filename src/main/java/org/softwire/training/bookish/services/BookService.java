@@ -1,12 +1,9 @@
 package org.softwire.training.bookish.services;
 
-import org.jdbi.v3.core.mapper.reflect.ConstructorMapper;
 import org.softwire.training.bookish.models.database.Book;
-import org.softwire.training.bookish.models.database.Technology;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookService extends DatabaseService{
@@ -27,19 +24,16 @@ public class BookService extends DatabaseService{
         );
     }
 
-    public boolean addBook(Book book) {
-        try {
-            jdbi.useHandle(handle ->
+    public int addBook(Book book) {
+           return jdbi.withHandle(handle ->
                     handle.createUpdate("INSERT INTO books (title, isbn, copies_total) VALUES (:title, :isbn, :copies_total)")
                             .bind("title", book.getTitle())
                             .bind("isbn", book.getIsbn())
                             .bind("copies_total", book.getCopies_total())
-                            .execute()
-            );
-        } catch (Exception e){
-            return false;
-        }
-        return true;
+                            .executeAndReturnGeneratedKeys("id")
+                            .mapTo(Integer.class)
+                            .findOnly()
+        );
     }
 
     public void deleteBook(int bookId) {
