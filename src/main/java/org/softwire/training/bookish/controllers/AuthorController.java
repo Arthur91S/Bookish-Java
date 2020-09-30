@@ -1,7 +1,10 @@
 package org.softwire.training.bookish.controllers;
 
+import org.softwire.training.bookish.models.database.Author;
 import org.softwire.training.bookish.models.database.Book;
+import org.softwire.training.bookish.models.page.AuthorPageModel;
 import org.softwire.training.bookish.models.page.BooksPageModel;
+import org.softwire.training.bookish.services.AuthorService;
 import org.softwire.training.bookish.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
     @Controller
-    @RequestMapping("/books")
+    @RequestMapping("/authors")
     public class AuthorController {
 
         private final AuthorService authorService;
@@ -25,10 +28,10 @@ import java.util.List;
         ModelAndView viewAuthors() {
             List<Author> allAuthors = authorService.getAllAuthors();
 
-            AuthorsPageModel authorsPageModel = new AuthorsPageModel();
-            authorsPageModel.setBooks(allAuthors);
+            AuthorPageModel authorPageModel = new AuthorPageModel();
+            authorPageModel.setAuthors(allAuthors);
 
-            return new ModelAndView("books","model", booksPageModel);
+            return new ModelAndView("authors","model", authorPageModel);
         }
 
 

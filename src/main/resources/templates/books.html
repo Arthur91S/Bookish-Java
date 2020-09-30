@@ -24,16 +24,21 @@
     <div class="alert error" role="alert" th:text="${error}" th:if="${error}"></div>
 
     <div class="book-list">
-        <div th:each="book : ${model.books}" class="book">
-<!--            <p th:text="${book.toString()}">  </p>-->
-            <h3 th:text="${book.title}"></h3>
-            <div>ISBN: <span th:text="${book.isbn}"></span></div>
-            <div>Books total: <span th:text="${book.copies_total}"></span></div>
+        <div th:each="book : ${ booksWithAuthor }" class="book">
+            <p th:text="${book}">  </p>
+<!--            <td th:text="${book.key.title}"></td>-->
+<!--            <td th:text="${book.value.title}"></td>-->
+<!--            <td th:text="${book.value[0].title}"></td>-->
+<!--            <h3 th:text="${book}"></h3>-->
+<!--            <div>ISBN: <span th:text="${book.isbn}"></span></div>-->
+<!--            <div>Books total: <span th:text="${book.copies_total}"></span></div>-->
+<!--            <div>Id: <span th:text="${book.id}"></span></div>-->
+<!--            <div>Authors: <span th:text="${book.authors}"></span></div>-->
 
             <p>
-                <a th:href="${'/books/delete-book?bookId=' + book.getId()}" class="delete-button">delete</a>
-                <a th:href="${'/books/edit-book?bookId=' + book.getId()}" class="edit-button">Edit</a>
-            </p>
+<!--                <a th:href="${'/books/delete-book?bookId=' + book.getId()}" class="delete-button">delete</a>-->
+<!--                <a th:href="${'/books/edit-book?bookId=' + book.getId()}" class="edit-button">Edit</a>-->
+<!--            </p>-->
         </div>
     </div>
 
@@ -48,7 +53,7 @@
         <div class="add-tech-row">
             <label>
                 <span>Book Author: </span>
-                <input type="text" name="authors" placeholder="Separate authors by commas, example: author1, author2, etc.">
+                <input type="text" name="authors" placeholder="Separate authors by commas.">
             </label>
         </div>
         <div class="add-tech-row">

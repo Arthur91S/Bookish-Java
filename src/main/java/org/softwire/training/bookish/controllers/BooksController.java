@@ -1,7 +1,9 @@
 package org.softwire.training.bookish.controllers;
 
+import org.softwire.training.bookish.models.database.Author;
 import org.softwire.training.bookish.models.database.Book;
 import org.softwire.training.bookish.models.page.BooksPageModel;
+import org.softwire.training.bookish.services.AuthorService;
 import org.softwire.training.bookish.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,27 +13,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/books")
 public class BooksController {
 
     private final BookService bookService;
+    private final AuthorService authorService;
 
     @Autowired
-    public BooksController(BookService bookService) {
+    public BooksController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @RequestMapping("")
     ModelAndView viewBooks() {
         List<Book> allBooks = bookService.getAllBooks();
+        List<Author> booksWithAuthors = authorService.getAllAuthors();
+
+        Map<Book, List<Author>> bookWithAuthor = new HashMap<Book, List<Author>>();
+
+             for(int i= 0; i < allBooks.size(); i++){
+                 Book book = allBooks.get(i);
+                 List<Author> authors = authorService.getAuthorBooks(book.getId());
+                 if (authors != null){
+                     bookWithAuthor.put(book, authors);
+                 }
+             }
 
         BooksPageModel booksPageModel = new BooksPageModel();
         booksPageModel.setBooks(allBooks);
 
-        return new ModelAndView("books","model", booksPageModel);
+        return new ModelAndView("books","bookWithAuthor", bookWithAuthor);
     }
 
     @RequestMapping("/add-book")

@@ -20,22 +20,20 @@
 <div class="container">
     <h1 style="text-align: center">All authors</h1>
 
-    <div class="alert success" role="alert" th:text="${success}" th:if="${success}"></div>
-    <div class="alert error" role="alert" th:text="${error}" th:if="${error}"></div>
+<!--    <div class="alert success" role="alert" th:text="${success}" th:if="${success}"></div>-->
+<!--    <div class="alert error" role="alert" th:text="${error}" th:if="${error}"></div>-->
 
-<!--    <div class="book-list">-->
-<!--        <div th:each="book : ${model.books}" class="book">-->
-<!--            &lt;!&ndash;            <p th:text="${book.toString()}">  </p>&ndash;&gt;-->
-<!--            <h3 th:text="${book.title}"></h3>-->
-<!--            <div>ISBN: <span th:text="${book.isbn}"></span></div>-->
-<!--            <div>Books total: <span th:text="${book.copies_total}"></span></div>-->
-
-<!--            <p>-->
+    <div class="book-list">
+        <div th:each="author : ${ model.authors }" class="book">
+            <!--            <p th:text="${book.toString()}">  </p>-->
+            <h3 th:text="${author.name}"></h3>
+            <p>Id:<span th:text="${author.id}"></span></p>
+            <p>
 <!--                <a th:href="${'/books/delete-book?bookId=' + book.getId()}" class="delete-button">delete</a>-->
 <!--                <a th:href="${'/books/edit-book?bookId=' + book.getId()}" class="edit-button">Edit</a>-->
-<!--            </p>-->
-<!--        </div>-->
-<!--    </div>-->
+            </p>
+        </div>
+    </div>
 
 <!--    <h2>Add a Book</h2>-->
     <form th:action="@{/books/add-book}" method="post">
