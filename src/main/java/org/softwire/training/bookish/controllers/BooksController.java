@@ -34,31 +34,30 @@ public class BooksController {
     @RequestMapping("")
     ModelAndView viewBooks() {
         List<Book> allBooks = bookService.getAllBooks();
-        List<Author> booksWithAuthors = authorService.getAllAuthors();
 
         Map<Book, List<Author>> bookWithAuthor = new LinkedHashMap<>();
-
-             for(int i= 0; i < allBooks.size(); i++){
-                 Book book = allBooks.get(i);
-                 List<Author> authors = authorService.getAuthorBooks(book.getId());
-                 if (authors != null){
-                     bookWithAuthor.put(book, authors);
-                 }
-             }
+        for (Book book : allBooks) {
+            List<Author> authors = authorService.getAuthorBooks(book.getId());
+            if (authors != null) {
+                bookWithAuthor.put(book, authors);
+            }
+        }
 
         BooksPageModel booksPageModel = new BooksPageModel();
         booksPageModel.setBooks(allBooks);
-
         booksPageModel.setBooksWithAuthor(bookWithAuthor);
 
-        return new ModelAndView("books","model", booksPageModel);
+        return new ModelAndView("books", "model", booksPageModel);
     }
 
     @RequestMapping("/add-book")
     RedirectView addBook(@ModelAttribute Book book, @RequestParam String authors) {
 
         int bookId = bookService.addBook(book);
-        authorService.addBookAuthors(bookId, authors);
+
+        if (!authors.isEmpty()) {
+            authorService.addBookAuthors(bookId, authors);
+        }
 
         return new RedirectView("/books");
     }
@@ -73,31 +72,30 @@ public class BooksController {
     ModelAndView editBook(@RequestParam int bookId) {
 
         Book book = bookService.getBook(bookId);
-        return new ModelAndView("edit_book", "book", book);
+
+        Map<Book, List<Author>> bookWithAuthor = new LinkedHashMap<>();
+        List<Author> bookWithAuthors = authorService.getAuthorBooks(bookId);
+        if (bookWithAuthors != null) {
+            bookWithAuthor.put(book, bookWithAuthors);
+        }
+
+        BooksPageModel booksPageModel = new BooksPageModel();
+        booksPageModel.setBooksWithAuthor(bookWithAuthor);
+
+        booksPageModel.getBooksWithAuthor().get(0);
+        return new ModelAndView("edit_book", "model", booksPageModel);
     }
 
     @RequestMapping("/update-book")
     RedirectView updateBook(@ModelAttribute Book book, RedirectAttributes attr) {
 
-        // validate book
-        // then update
-
-        if (bookService.updateBook(book)){
+        if (bookService.updateBook(book)) {
             attr.addFlashAttribute("success", "Excellent, everything went just fine.");
         } else {
             attr.addFlashAttribute("error", "Ops, something went wrong.");
         }
-
         return new RedirectView("/books");
     }
-
-
-
-
-
-
-
-
 
 
 }

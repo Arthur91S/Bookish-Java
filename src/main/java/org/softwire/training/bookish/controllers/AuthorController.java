@@ -9,7 +9,9 @@ import org.softwire.training.bookish.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -32,6 +34,12 @@ import java.util.List;
             authorPageModel.setAuthors(allAuthors);
 
             return new ModelAndView("authors","model", authorPageModel);
+        }
+
+        @RequestMapping("/delete-author")
+        RedirectView deleteAuthor(@RequestParam int authorId) {
+            authorService.deleteAuthor(authorId);
+            return new RedirectView("/authors");
         }
 
 

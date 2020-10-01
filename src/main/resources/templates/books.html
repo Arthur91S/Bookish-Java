@@ -24,14 +24,18 @@
     <div class="alert error" role="alert" th:text="${error}" th:if="${error}"></div>
 
     <div class="book-list">
-        <div th:each="book : ${ model.booksWithAuthor }" class="book">
-
-            <div>Title: <span th:text="${book.key.title}"></span></div>
-            <div>ISBN: <span th:text="${book.key.isbn}"></span></div>
-            <ul th:each="author:  ${book.value }" >
+        <div th:each="bookWithAuthor : ${ model.booksWithAuthor }" class="book">
+            <h3>Title: <span th:text="${bookWithAuthor.key.title}"></span></h3>
+            <div>ISBN: <span th:text="${bookWithAuthor.key.isbn}"></span></div>
+            <ul th:each="author:  ${bookWithAuthor.value }">
                 <li th:text="${ author.name}"></li>
             </ul>
+            <p>
+                <a th:href="${'/books/delete-book?bookId=' + bookWithAuthor.key.id}" class="delete-button">delete</a>
+                <a th:href="${'/books/edit-book?bookId=' + bookWithAuthor.key.id}" class="edit-button">Edit</a>
+            </p>
         </div>
+
     </div>
 
     <h2>Add a Book</h2>
@@ -62,7 +66,7 @@
         </div>
         <div class="add-tech-row">
             <span><!-- spacer --></span>
-            <input type="submit" value="Add A Book" />
+            <input type="submit" value="Add A Book"/>
         </div>
     </form>
 </div>

@@ -12,63 +12,23 @@
 </head>
 
 <body>
-
-<div th:replace="fragments/navbar :: navbar">
-    <!-- This element is replaced by the HTML in fragments/navbar.html -->
-</div>
-
-<div class="container">
-    <h1 style="text-align: center">All authors</h1>
-
-<!--    <div class="alert success" role="alert" th:text="${success}" th:if="${success}"></div>-->
-<!--    <div class="alert error" role="alert" th:text="${error}" th:if="${error}"></div>-->
-
-    <div class="book-list">
-        <div th:each="author : ${ model.authors }" class="book">
-            <!--            <p th:text="${book.toString()}">  </p>-->
-            <h3 th:text="${author.name}"></h3>
-            <p>Id:<span th:text="${author.id}"></span></p>
-            <p>
-<!--                <a th:href="${'/books/delete-book?bookId=' + book.getId()}" class="delete-button">delete</a>-->
-<!--                <a th:href="${'/books/edit-book?bookId=' + book.getId()}" class="edit-button">Edit</a>-->
-            </p>
-        </div>
+    <div th:replace="fragments/navbar :: navbar">
+        <!-- This element is replaced by the HTML in fragments/navbar.html -->
     </div>
 
-<!--    <h2>Add a Book</h2>-->
-    <form th:action="@{/books/add-book}" method="post">
-        <div class="add-tech-row">
-            <label>
-                <span>Book Title: </span>
-                <input type="text" name="title">
-            </label>
+    <div class="container">
+        <h1 style="text-align: center">All authors</h1>
+        <div class="book-list">
+            <div th:each="author : ${ model.authors }" class="book">
+                <h3 th:text="${author.name}"></h3>
+                <p>Id:<span th:text="${author.id}"></span></p>
+                <p>
+                    <a th:href="${'/authors/delete-author?authorId=' + author.id}" class="delete-button">Delete</a>
+                    <a th:href="${'/authors/edit-author?authorId=' + author.id}" class="edit-button">Edit</a>
+                </p>
+            </div>
         </div>
-        <div class="add-tech-row">
-            <label>
-                <span>Book Author: </span>
-                <input type="text" name="authors" placeholder="Separate authors by commas, example: author1, author2, etc.">
-            </label>
-        </div>
-        <div class="add-tech-row">
-            <label>
-                <span>ISBN: </span>
-                <input type="text" name="isbn">
-            </label>
-        </div>
-        <div class="add-tech-row">
-            <label>
-                <span>Copies Total: </span>
-                <input type="text" name="copies_total">
-            </label>
-        </div>
-        <div class="add-tech-row">
-            <span><!-- spacer --></span>
-            <input type="submit" value="Add A Book" />
-        </div>
-    </form>
-</div>
-
+    </div>
 </body>
-
 
 </html>

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BookService extends DatabaseService{
+public class BookService extends DatabaseService {
     public List<Book> getAllBooks() {
         return jdbi.withHandle(handle ->
                 handle.createQuery("SELECT * FROM books")
@@ -25,14 +25,14 @@ public class BookService extends DatabaseService{
     }
 
     public int addBook(Book book) {
-           return jdbi.withHandle(handle ->
-                    handle.createUpdate("INSERT INTO books (title, isbn, copies_total) VALUES (:title, :isbn, :copies_total)")
-                            .bind("title", book.getTitle())
-                            .bind("isbn", book.getIsbn())
-                            .bind("copies_total", book.getCopies_total())
-                            .executeAndReturnGeneratedKeys("id")
-                            .mapTo(Integer.class)
-                            .findOnly()
+        return jdbi.withHandle(handle ->
+                handle.createUpdate("INSERT INTO books (title, isbn, copies_total) VALUES (:title, :isbn, :copies_total)")
+                        .bind("title", book.getTitle())
+                        .bind("isbn", book.getIsbn())
+                        .bind("copies_total", book.getCopies_total())
+                        .executeAndReturnGeneratedKeys("id")
+                        .mapTo(Integer.class)
+                        .findOnly()
         );
     }
 

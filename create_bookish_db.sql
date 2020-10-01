@@ -43,6 +43,21 @@ CREATE TABLE checked_out_books (
 );
 
 
+---------------------------------------
+
+ALTER TABLE `bookish`.`author_books`
+DROP FOREIGN KEY `author_books_ibfk_1`,
+DROP FOREIGN KEY `author_books_ibfk_2`;
+ALTER TABLE `bookish`.`author_books`
+ADD CONSTRAINT `author_books_ibfk_1`
+  FOREIGN KEY (`book_id`)
+  REFERENCES `bookish`.`books` (`id`)
+  ON DELETE CASCADE,
+ADD CONSTRAINT `author_books_ibfk_2`
+  FOREIGN KEY (`author_id`)
+  REFERENCES `bookish`.`authors` (`id`)
+  ON DELETE CASCADE;
+
 
 
 

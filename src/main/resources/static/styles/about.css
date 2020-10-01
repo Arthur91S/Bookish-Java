@@ -4,6 +4,11 @@ h2 {
     font-weight: normal;
     font-size: 24px;
 }
+ul {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+}
 .success {
     text-align: center;
     padding : 8px 16px;
